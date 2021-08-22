@@ -5,6 +5,13 @@ from math import copysign
 from mpmath import mp, mpf
 import matplotlib.pyplot as plt
 
+#implementacion del error hacia adelante y hacia atras
+def errores(r1, r2, funcion,v ):
+    errorHaciaAtras = abs(mpf(valorFuncion(funcion,r1)))
+    errorHaciaAdelante = abs(mpf(r1 - r2))
+    print("El error hacia atras es: " + str(errorHaciaAtras))
+    print("El error hacia adelante es: " + str(errorHaciaAdelante))
+
 #implementacion de Metodo de Biseccion
 def metodoBiseccion(a,b,e,funcion):
 
@@ -27,6 +34,13 @@ def metodoBiseccion(a,b,e,funcion):
 # implementacion de metodo de Newton
 def metodoNewton(v, e, funcion):
     
+    #verificacion de que la funcion si tenga una seguda derivada
+    if segundaDerivada(funcion) == 0:
+        print("Error la funcion no tiene segunda derivada")
+        return
+    if derivada(funcion,v) == 0:
+        print("Error la derivada de la funcion es cero")
+        return
     #asignacion inicial del valor de la raiz
     r = mpf(v - (valorFuncion(funcion,v)/derivada(funcion,v)))
     iteraciones = 0
@@ -51,7 +65,9 @@ def valorFuncion(funcion,v):
 def derivada(funcion, v):
     deriv = sy.diff(funcion,x)
     return deriv.doit().subs({x:v}).evalf()
-
+def segundaDerivada(funcion):
+    segunda = diff(funcion, x, 2)
+    return segunda
 #main
 #definicion de los parametros y funciones necesarias
 x = sy.Symbol('x')
@@ -100,24 +116,41 @@ elif numeroF == 5:
 # ejecucion del codigo 
 mp.dps = 8
 print("---------------------------------------")
-print("raiz = " + str(mpf(metodoNewton(mpf(valor), mpf(1.0e-8), funcion))))
-print("raiz = " + str(mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-8), funcion))))
+r1 = mpf(metodoNewton(mpf(valor), mpf(1.0e-8), funcion))
+r2 = mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-8), funcion))
+print("raiz = " + str(r1))
+print("raiz = " + str(r2))
+print("-----------------Errores---------------")
+errores(r1,r2,funcion,valor)
 print("---------------------------------------")
 mp.dps = 16
 print("---------------------------------------")
-print("raiz = " + str(mpf(metodoNewton(mpf(valor), mpf(1.0e-16), funcion))))
-print("raiz = " + str(mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-16), funcion))))
+r1 = mpf(metodoNewton(mpf(valor), mpf(1.0e-16), funcion))
+r2 = mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-16), funcion))
+print("raiz = " + str(r1))
+print("raiz = " + str(r2))
+print("-----------------Errores---------------")
+errores(r1,r2,funcion,valor)
 print("---------------------------------------")
 mp.dps = 32
 print("---------------------------------------")
-print("raiz = " + str(mpf(metodoNewton(mpf(valor), mpf(1.0e-32), funcion))))
-print("raiz = " + str(mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-32), funcion))))
+r1 = mpf(metodoNewton(mpf(valor), mpf(1.0e-32), funcion))
+r2 = mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-32), funcion))
+print("raiz = " + str(r1))
+print("raiz = " + str(r2))
+print("-----------------Errores---------------")
+errores(r1,r2,funcion,valor)
 print("---------------------------------------")
 mp.dps = 56
 print("---------------------------------------")
-print("raiz = " + str(mpf(metodoNewton(mpf(valor), mpf(1.0e-56), funcion))))
-print("raiz = " + str(mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-56), funcion))))
+r1 = mpf(metodoNewton(mpf(valor), mpf(1.0e-56), funcion))
+r2 = mpf(metodoBiseccion(mpf(valorABiseccion),mpf(valorBBiseccion), mpf(1.0e-56), funcion))
+print("raiz = " + str(r1))
+print("raiz = " + str(r2))
+print("-----------------Errores---------------")
+errores(r1,r2,funcion,valor)
 print("---------------------------------------")
+
 
 # graficacion
 plt.plot(arregloTolerancia, arregloIteracionesBiseccion,'o--r')
