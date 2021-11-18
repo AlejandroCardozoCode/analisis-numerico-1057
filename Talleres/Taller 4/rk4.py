@@ -46,8 +46,8 @@ def error(n, cap):
     print("El error de truncamiento es :", valor, "x10^", error)
 
 
-#rk4(f,1,2,10,0.4)
+rk4(f,1,2,10,0.4)
 #rk4(f,1,2,10,0.01)
-rk4(f,1,2,10,1.55)
+##rk4(f,1,2,10,1.55)
 
 
